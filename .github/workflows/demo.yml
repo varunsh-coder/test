@@ -1,4 +1,4 @@
-name: Policy demo
+name: Harden runnerv2
 
 on: [push, issues, workflow_dispatch]
 
@@ -14,9 +14,12 @@ jobs:
     
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@rc-4
+      uses: step-security/harden-runner@rc
       with:
-        policy: policy1
+        egress-policy: block
+        allowed-endpoints:
+          github.com:443
+          api.github.com:443
 
     - uses: actions/first-interaction@1d8459ca65b335265f1285568221e229d45a995e # v1.1.1
       with:
