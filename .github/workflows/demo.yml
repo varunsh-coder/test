@@ -19,7 +19,8 @@ jobs:
         egress-policy: block
         allowed-endpoints:
           github.com:443
-          api.github.com:443
+          *.github.com:443
+          *.docker.io:443
 
     - uses: actions/first-interaction@1d8459ca65b335265f1285568221e229d45a995e # v1.1.1
       with:
@@ -27,4 +28,10 @@ jobs:
         issue-message: "Message that will be displayed on users' first issue"
         pr-message: "Message that will be displayed on users' first pull request"
 
+    - run: curl -X GET https://auth.docker.io
+    - run: sleep 40
+    - run: curl -X GET https://auth.docker.io
+    - run: sleep 40
+    - run: curl -X GET https://auth.docker.io
+    - run: sleep 40
     - run: curl -X GET https://google.com
