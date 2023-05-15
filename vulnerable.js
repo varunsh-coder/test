@@ -3,7 +3,7 @@ app.controller('myCtrl', function($scope, $sce) {
     $scope.userInput = 'foo';
 
     $scope.sayHello = function() {
-     // ruleid:detect-angular-open-redirect
+     // ruleid:detect-angular-open-redirect1
      $window.location.href = input + '/app/logout';
      input = $scope.input;
      // ruleid:detect-angular-open-redirect
