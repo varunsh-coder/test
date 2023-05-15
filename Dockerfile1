@@ -1,6 +1,6 @@
 FROM busybox
 
-# uncomment for ok1
+# uncomment for ok2
 #USER notroot
 
 RUN git clone https://github.com/returntocorp/semgrep
