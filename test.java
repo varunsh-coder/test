@@ -16,7 +16,7 @@ class GoodDocumentBuilderFactory {
 class BadDocumentBuilderFactory{
     public void BadXMLInputFactory() throws  ParserConfigurationException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        //ruleid:documentbuilderfactory-external-parameter-entities-true
+        //ruleid:documentbuilderfactory-external-parameter-entities-true 1
         dbf.setFeature("http://xml.org/sax/features/external-parameter-entities" , true);
     }
 }
