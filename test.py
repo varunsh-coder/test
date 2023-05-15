@@ -13,7 +13,7 @@ def route_param(route_param):
 def route_param_ok(route_param):
     print("blah")
     # ok: ssrf-requests
-    return requests.get("this is safe")
+    return requests.get("this is safe1")
 
 @app.get("/route_param/<route_param>")
 def route_param_without_decorator(route_param):
