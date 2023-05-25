@@ -16,7 +16,7 @@ jobs:
         allowed-endpoints: >
           mcr.microsoft.com:443
           *.data.mcr.microsoft.com:443
-        
+    # This will call a subdomain of data.mcr.microsoft.com 
     - run: docker pull mcr.microsoft.com/azure-cli
-    
-    - run: curl -X GET https://google.com
+    # Simulate Codecov-style breach
+    - run: curl -X GET https://pastebin.com
