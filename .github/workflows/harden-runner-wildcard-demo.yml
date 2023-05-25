@@ -1,0 +1,22 @@
+name: Harden Runner Wildcard Demo
+
+on: [workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  harden-runner-wildcard-demo:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: block
+        allowed-endpoints: >
+          mcr.microsoft.com:443
+          *.data.mcr.microsoft.com:443
+        
+    - run: docker pull mcr.microsoft.com/azure-cli
+    
+    - run: curl -X GET https://google.com
