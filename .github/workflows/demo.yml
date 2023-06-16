@@ -15,7 +15,7 @@ jobs:
     
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@rc
+      uses: step-security/harden-runner@338ce58233ab58ee6827c16539142933664d5102 # rc
       with:
         policy: policy1
 
