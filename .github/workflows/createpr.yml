@@ -12,6 +12,11 @@ jobs:
       pull-requests: write  # for peter-evans/create-pull-request to create a PR
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v3
 
       - name: Make changes to pull request
