@@ -2,15 +2,9 @@ name: Harden runnerv2
 
 on: [push, issues, workflow_dispatch]
 
-permissions:  # added using https://github.com/step-security/secure-workflows
-  contents: read
-
 jobs:
   greeting:
-    permissions:
-      issues: write  # for actions/first-interaction to comment on first issue
-      pull-requests: write  # for actions/first-interaction to comment on first PR
-      id-token: write
+    
     runs-on: ubuntu-latest
     
     steps:
