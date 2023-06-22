@@ -18,8 +18,7 @@ jobs:
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v0"
         with:
-          workload_identity_provider: "projects/21710762087/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider"
-          service_account: "github-actions-service-account@app-script-example.iam.gserviceaccount.com"
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
