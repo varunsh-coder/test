@@ -2,14 +2,20 @@ name: Harden runnerv2
 
 on: [push, issues, workflow_dispatch]
 
+permissions:
+  contents: read
+
 jobs:
   greeting:
     
+    permissions:
+      issues: write  # for actions/first-interaction to comment on first issue
+      pull-requests: write  # for actions/first-interaction to comment on first PR
     runs-on: ubuntu-latest
     
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@rc
+      uses: step-security/harden-runner@55d479fb1c5bcad5a4f9099a5d9f37c8857b2845 # rc
       with:
         policy: policy1
 
