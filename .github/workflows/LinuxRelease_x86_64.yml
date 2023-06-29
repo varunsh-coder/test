@@ -32,7 +32,7 @@ jobs:
         git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@3faddefb4c02470d61266571df739b19e3a006be 
+      uses: actions/setup-python@0d5da6a89a3aa5b4dbd48e38b0c9d678b0caa0e5 
       with:
         python-version: ${{ matrix.python-version }}
         architecture: ${{ matrix.architecture }}
