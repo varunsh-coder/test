@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-workflow-1-in-local-repo:
-    uses: varunsh-coder/test/.github/workflows/reusableworkflow.yml@main
   deploy:
     runs-on: ubuntu-latest
 
