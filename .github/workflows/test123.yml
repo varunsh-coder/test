@@ -23,9 +23,12 @@ jobs:
     steps:
       # Runs a single command using the runners shell
       - name: Harden Runner
-        uses: step-security/harden-runner@rc
+        uses: step-security/harden-runner@rc # v2.5.0
         with:
-          egress-policy: audit
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            prod.api.stepsecurity.io:443
 
       - uses: step-security/wait-for-secrets@v1
         id: get-otp
