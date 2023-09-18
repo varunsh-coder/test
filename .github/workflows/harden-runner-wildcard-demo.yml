@@ -6,11 +6,25 @@ permissions:
   contents: read
 
 jobs:
+  harden-runner-wildcard-demo1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@int
+      with:
+        egress-policy: audit
+        allowed-endpoints: >
+          mcr.microsoft.com:443
+          *.data.mcr.microsoft.com:443
+    # This will call a subdomain of data.mcr.microsoft.com 
+    - run: docker pull mcr.microsoft.com/azure-cli
+    # Simulate Codecov-style breach
+    - run: curl -X GET https://pastebin.com
   harden-runner-wildcard-demo:
     runs-on: ubuntu-latest
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@arc-cache-fix
+      uses: step-security/harden-runner@int
       with:
         egress-policy: block
         allowed-endpoints: >
