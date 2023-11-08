@@ -15,7 +15,7 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: step-security/harden-runner@int
+      - uses: step-security/harden-runner@v2
         with:
           egress-policy: audit
       - uses: amannn/action-semantic-pull-request@v5
