@@ -10,16 +10,11 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-      - name: Export GPG Key
-        run: |
-          gpg --armor --export-secret-keys joe@foo.bar > secret-key.asc
-        env:
-          GPG_PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: Upload Secret Key as Artifact
-        uses: actions/upload-artifact@v2
+      
+      - name: hr
+        uses: step-security/harden-runner@v2
         with:
-          name: gpg-secret-key
-          path: secret-key.asc
+          egress-policy: audit
 
       -
         name: Import GPG key
