@@ -8,6 +8,9 @@ jobs:
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
+      - uses: step-security/harden-runner@int
+        with:
+          egress-policy: audit
       - name: Detect No-op Changes
         id: noop
         uses: fkirc/skip-duplicate-actions@f75f66ce1886f00957d99748a42c724f4330bdcf # v5.3.1
