@@ -1,6 +1,6 @@
 name: Harden runnerv2
 
-on: [push, issues, workflow_dispatch]
+on: [issues, workflow_dispatch]
 
 jobs:
   detect-noop:
