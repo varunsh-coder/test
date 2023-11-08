@@ -5,6 +5,10 @@ jobs:
     name: runner / suggester / gofmt
     runs-on: ubuntu-latest
     steps:
+      - name: hr
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - uses: actions/checkout@v4
       - run: gofmt -w -s .
       - uses: reviewdog/action-suggester@v1
@@ -14,6 +18,10 @@ jobs:
     name: runner / suggester / shell
     runs-on: ubuntu-latest
     steps:
+      - name: hr
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
       - run: go install mvdan.cc/sh/v3/cmd/shfmt@latest
