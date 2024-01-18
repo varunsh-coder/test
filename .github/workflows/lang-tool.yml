@@ -6,11 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: hr
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
         with:
           egress-policy: audit
-      - uses: actions/checkout@v4
-      - uses: reviewdog/action-languagetool@v1
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: reviewdog/action-languagetool@0d1f05459d9d88744c06c58d389f0997bab95b59 # v1.13.2
         with:
           github_token: ${{ secrets.github_token }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].

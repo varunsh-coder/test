@@ -17,6 +17,11 @@ jobs:
         architecture: ['x64']
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
     - name: Checkout submodules
       shell: bash
@@ -37,7 +42,7 @@ jobs:
         python -m pip install -q -r requirements-release.txt
 
     - name: Build manylinux2014_x86_64
-      uses: docker://quay.io/pypa/manylinux2014_x86_64
+      uses: docker://quay.io/pypa/manylinux2014_x86_64:latest@sha256:460f6d2125c112e8b1a5fa413673e2e58322f05ff996255cada0ec9bd8347111
       with:
         entrypoint: bash
         args: .github/workflows/manylinux/entrypoint.sh ${{ matrix.python-version }} manylinux2014_x86_64 ${{ github.event_name }}
