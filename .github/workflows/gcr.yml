@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: h0x0er/harden-runner@tls-inspect
         with:
           egress-policy: audit
 
