@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@int
+      uses: step-security/harden-runner@03b5d23dca9a1761d8ce7fefebec95691ae88ea5 # int
       with:
         egress-policy: audit
         allowed-endpoints: >
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@int
+      uses: step-security/harden-runner@03b5d23dca9a1761d8ce7fefebec95691ae88ea5 # int
       with:
         egress-policy: block
         allowed-endpoints: >
