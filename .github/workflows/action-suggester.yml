@@ -1,34 +1,43 @@
 name: reviewdog-suggester
 on: [pull_request] # Support only pull_request event.
+permissions:
+  contents: read
+
 jobs:
   go:
+    permissions:
+      checks: write  # for reviewdog/action-suggester to report issues using checks
+      contents: read  # for actions/checkout to fetch code
     name: runner / suggester / gofmt
     runs-on: ubuntu-latest
     steps:
       - name: hr
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@f086349bfa2bd1361f7909c78558e816508cdc10 # v2.8.0
         with:
           egress-policy: audit
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - run: gofmt -w -s .
-      - uses: reviewdog/action-suggester@v1
+      - uses: reviewdog/action-suggester@185c9c06d0a28fbe43b50aca4b32777b649e7cbd # v1.12.0
         with:
           tool_name: gofmt
   shell:
+    permissions:
+      checks: write  # for reviewdog/action-suggester to report issues using checks
+      contents: read  # for actions/checkout to fetch code
     name: runner / suggester / shell
     runs-on: ubuntu-latest
     steps:
       - name: hr
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@f086349bfa2bd1361f7909c78558e816508cdc10 # v2.8.0
         with:
           egress-policy: audit
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4.1.0
       - run: go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
       - run: shfmt -i 2 -ci -w .
       - name: suggester / shfmt
-        uses: reviewdog/action-suggester@v1
+        uses: reviewdog/action-suggester@185c9c06d0a28fbe43b50aca4b32777b649e7cbd # v1.12.0
         with:
           tool_name: shfmt
 
@@ -41,6 +50,6 @@ jobs:
           rm -rf "shellcheck-${scversion}/shellcheck"
       - run: shellcheck -f diff $(shfmt -f .) | patch -p1
       - name: suggester / shellcheck
-        uses: reviewdog/action-suggester@v1
+        uses: reviewdog/action-suggester@185c9c06d0a28fbe43b50aca4b32777b649e7cbd # v1.12.0
         with:
           tool_name: shellcheck

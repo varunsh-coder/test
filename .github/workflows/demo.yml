@@ -2,13 +2,19 @@ name: Harden runnerv2
 
 on: [issues, workflow_dispatch]
 
+permissions:
+  contents: read
+
 jobs:
   detect-noop:
+    permissions:
+      actions: write  # for fkirc/skip-duplicate-actions to skip or stop workflow runs
+      contents: read  # for fkirc/skip-duplicate-actions to read and compare commits
     runs-on: ubuntu-22.04
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
-      - uses: step-security/harden-runner@v2
+      - uses: step-security/harden-runner@f086349bfa2bd1361f7909c78558e816508cdc10 # v2.8.0
         with:
           egress-policy: audit
       - name: Detect No-op Changes
@@ -20,6 +26,9 @@ jobs:
           concurrent_skipping: false
   greeting:
     
+    permissions:
+      issues: write  # for actions/first-interaction to comment on first issue
+      pull-requests: write  # for actions/first-interaction to comment on first PR
     runs-on: ubuntu-latest
     
     steps:
