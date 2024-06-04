@@ -20,7 +20,7 @@ jobs:
           concurrent_skipping: false
   greeting:
     
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-8-core-latest
     
     steps:
     - name: Harden Runner
