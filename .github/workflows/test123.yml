@@ -38,3 +38,9 @@ jobs:
               description: 'Dummy secret to demo wait-for-secrets'
       - run: |
           echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
+      - uses: step-security/retry@main
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          shell: pwsh
+          command: dir
