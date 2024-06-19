@@ -3,19 +3,22 @@ name: Reusable workflow example
 on:
   workflow_call:
     
+permissions:
+  contents: read
+
 jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@v2
+      uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
       with:
         egress-policy: audit
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
 
     - name: Setup Node.js 15.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e # v1.4.6
       with:
        node-version: 15.x
