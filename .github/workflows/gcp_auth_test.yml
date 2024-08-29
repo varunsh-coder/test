@@ -45,10 +45,10 @@ jobs:
         fi
     
         # Copy the credentials file to /github/home
-        sudo cp ${{ secrets.GOOGLE_CREDENTIALS }} "$GITHUB_HOME_DIR/$CREDS_FILE_NAME"
+        sudo cp ${GOOGLE_APPLICATION_CREDENTIALS} "$GITHUB_HOME_DIR/$CREDS_FILE_NAME"
     
         # Copy the credentials file to /home/runner/work/_temp/_github_home
-        cp ${{ secrets.GOOGLE_CREDENTIALS }} "$HOST_GITHUB_HOME_DIR/$CREDS_FILE_NAME"
+        cp ${GOOGLE_APPLICATION_CREDENTIALS} "$HOST_GITHUB_HOME_DIR/$CREDS_FILE_NAME"
     
         
         # Set the GOOGLE_APPLICATION_CREDENTIALS environment variable to point to /github/home/credsfile
