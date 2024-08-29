@@ -1,0 +1,12 @@
+name: "GCP Docker Action"
+description: "A custom action to run GCP commands in Docker"
+inputs:
+  args:
+    description: "The arguments to pass to the Docker container"
+    required: true
+    default: "gcloud auth list"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.args }}
