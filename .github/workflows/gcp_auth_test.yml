@@ -70,7 +70,8 @@ jobs:
         
         echo "Listing GCP storage buckets..."
         gcloud auth list
-        
+        gcloud projects list
+
 
     # Another example using a different GCP command
     - name: Run Another GCP Command in Docker Action
