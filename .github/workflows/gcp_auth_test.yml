@@ -16,6 +16,11 @@ jobs:
       with:
         credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
+    - name: Print all environment variables
+      run: |
+        echo "Printing all environment variables:"
+        env
+        
     # Step using GCP CLI in a normal GitHub Actions environment
     - name: Perform GCP Operation
       run: |
