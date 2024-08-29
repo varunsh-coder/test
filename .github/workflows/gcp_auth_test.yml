@@ -65,7 +65,9 @@ jobs:
       run: |
         echo "Activating service account..."
         gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
-      
+
+        gcloud config set account `gcloud auth list --filter=status:ACTIVE --format="value(account)"`
+        
         echo "Listing GCP storage buckets..."
         gcloud auth list
         
