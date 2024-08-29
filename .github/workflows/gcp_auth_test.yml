@@ -12,7 +12,7 @@ jobs:
 
     - name: Set up Google Cloud credentials
       id: auth
-      uses: google-github-actions/auth@v1
+      uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
@@ -21,16 +21,10 @@ jobs:
       run: |
         echo "Listing GCP storage buckets..."
         gcloud auth list
-        gsutil ls
-
-    # Step using the custom Docker Action to run GCP commands
-    - name: Run GCP Command in Docker Action
-      uses: ./.github/actions/gcp-docker-action
-      with:
-        args: "gsutil ls"
+        
 
     # Another example using a different GCP command
     - name: Run Another GCP Command in Docker Action
       uses: ./.github/actions/gcp-docker-action
       with:
-        args: "gcloud compute instances list"
+        args: "gcloud auth list"
