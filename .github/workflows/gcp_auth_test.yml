@@ -1,0 +1,36 @@
+name: Google Cloud Auth and Operations with Docker Action
+
+on: [workflow_dispatch]
+
+jobs:
+  gcp-operations:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Google Cloud credentials
+      id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+    # Step using GCP CLI in a normal GitHub Actions environment
+    - name: Perform GCP Operation
+      run: |
+        echo "Listing GCP storage buckets..."
+        gcloud auth list
+        gsutil ls
+
+    # Step using the custom Docker Action to run GCP commands
+    - name: Run GCP Command in Docker Action
+      uses: ./.github/actions/gcp-docker-action
+      with:
+        args: "gsutil ls"
+
+    # Another example using a different GCP command
+    - name: Run Another GCP Command in Docker Action
+      uses: ./.github/actions/gcp-docker-action
+      with:
+        args: "gcloud compute instances list"
