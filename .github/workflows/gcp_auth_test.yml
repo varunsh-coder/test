@@ -19,6 +19,9 @@ jobs:
     # Step using GCP CLI in a normal GitHub Actions environment
     - name: Perform GCP Operation
       run: |
+        echo "Activating service account..."
+        gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
+      
         echo "Listing GCP storage buckets..."
         gcloud auth list
         
