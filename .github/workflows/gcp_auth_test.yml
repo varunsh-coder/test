@@ -21,6 +21,42 @@ jobs:
         echo "Printing all environment variables:"
         env
         
+    - name: Check and Set Up Google Cloud Credentials in /github/home
+      run: |
+        # Define the credentials file name
+        CREDS_FILE_NAME="gcp-creds.json"
+        GITHUB_HOME_DIR="/github/home"
+        HOST_GITHUB_HOME_DIR="/home/runner/work/_temp/_github_home"
+
+        # Check if /github/home exists
+        if [ ! -d "$GITHUB_HOME_DIR" ]; then
+          echo "Directory $GITHUB_HOME_DIR does not exist. Creating it now."
+          sudo mkdir -p "$GITHUB_HOME_DIR"
+        else
+          echo "Directory $GITHUB_HOME_DIR already exists."
+        fi
+    
+        # Check if /home/runner/work/_temp/_github_home exists
+        if [ ! -d "$HOST_GITHUB_HOME_DIR" ]; then
+          echo "Directory $HOST_GITHUB_HOME_DIR does not exist. Creating it now."
+          mkdir -p "$HOST_GITHUB_HOME_DIR"
+        else
+          echo "Directory $HOST_GITHUB_HOME_DIR already exists."
+        fi
+    
+        # Copy the credentials file to /github/home
+        sudo cp ${{ secrets.GCP_CREDENTIALS }} "$GITHUB_HOME_DIR/$CREDS_FILE_NAME"
+    
+        # Copy the credentials file to /home/runner/work/_temp/_github_home
+        cp ${{ secrets.GCP_CREDENTIALS }} "$HOST_GITHUB_HOME_DIR/$CREDS_FILE_NAME"
+    
+        
+        # Set the GOOGLE_APPLICATION_CREDENTIALS environment variable to point to /github/home/credsfile
+        echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_HOME_DIR/$CREDS_FILE_NAME" >> $GITHUB_ENV
+
+    - name: Print environment variable
+      run: echo "GOOGLE_APPLICATION_CREDENTIALS is set to $GOOGLE_APPLICATION_CREDENTIALS"
+
     # Step using GCP CLI in a normal GitHub Actions environment
     - name: Perform GCP Operation
       run: |
