@@ -10,6 +10,7 @@ env
 gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
 
 gcloud auth list
+gcloud projects list
 
 # Run the provided GCP commands
 exec "$@"
