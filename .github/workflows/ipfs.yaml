@@ -1,17 +1,11 @@
-name: IPFS Workflow
+name: IPFS Public Nodes Workflow
 
 on:
   workflow_dispatch:
   
 jobs:
-  ipfs-job:
+  ipfs-public-nodes-job:
     runs-on: ubuntu-latest
-
-    services:
-      ipfs:
-        image: ipfs/go-ipfs:latest
-        ports:
-          - 5001:5001
 
     steps:
     - name: Harden Runner
@@ -23,30 +17,49 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Updated to a more recent LTS version
+        node-version: '16'
 
     - name: Install IPFS HTTP Client
-      run: npm install ipfs-http-client@50.1.2  # Specifying a version known to work with Node.js 16
+      run: npm install ipfs-http-client@50.1.2
 
-    - name: Interact with IPFS
+    - name: Interact with Public IPFS Nodes
       run: |
         node -e "
         const { create } = require('ipfs-http-client');
-        
+
         async function main() {
-          const client = create({ url: 'http://localhost:5001' });
-          
-          // Add a file to IPFS
-          const { cid } = await client.add('Hello, IPFS!');
-          console.log('Added file:', cid.toString());
-          
-          // Retrieve the file content
-          const chunks = [];
-          for await (const chunk of client.cat(cid)) {
-            chunks.push(chunk);
+          // Connect to a public IPFS gateway
+          const client = create({ url: 'https://ipfs.infura.io:5001' });
+
+          try {
+            // Add content to IPFS
+            const { cid } = await client.add('Hello from GitHub Actions!');
+            console.log('Added content with CID:', cid.toString());
+
+            // Retrieve the content
+            let content = '';
+            for await (const chunk of client.cat(cid)) {
+              content += chunk.toString();
+            }
+            console.log('Retrieved content:', content);
+
+            // List peers
+            const peerIds = await client.swarm.peers();
+            console.log('Connected peers:', peerIds.length);
+            peerIds.slice(0, 5).forEach(peer => console.log(peer.peer));
+
+            // Fetch a known IPFS object (IPFS logo)
+            const ipfsLogoCid = 'QmTkzDwWqPbnAh5YiV5VwcTLnGdwSNsNTn2aDxdXBFca7D';
+            let logoContent = '';
+            for await (const chunk of client.cat(ipfsLogoCid)) {
+              logoContent += chunk.toString().slice(0, 100); // Just get the first 100 chars
+            }
+            console.log('IPFS Logo content (first 100 chars):', logoContent);
+
+          } catch (error) {
+            console.error('Error:', error.message);
           }
-          console.log('Retrieved content:', Buffer.concat(chunks).toString());
         }
-        
+
         main().catch(console.error);
         "
