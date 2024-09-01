@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup IPFS
-      uses: ipfs-shipyard/ipfs-setup-action@v1
+      uses: ipfs-shipyard/ipfs-github-action@v2
       with:
         ipfs_version: 0.11.0
         run_daemon: true
