@@ -2,7 +2,7 @@ name: IPFS Workflow
 
 on:
   workflow_dispatch:
-
+  
 jobs:
   ipfs-job:
     runs-on: ubuntu-latest
@@ -19,10 +19,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'  # Updated to a more recent LTS version
 
     - name: Install IPFS HTTP Client
-      run: npm install ipfs-http-client
+      run: npm install ipfs-http-client@50.1.2  # Specifying a version known to work with Node.js 16
 
     - name: Interact with IPFS
       run: |
@@ -30,15 +30,15 @@ jobs:
         const { create } = require('ipfs-http-client');
         
         async function main() {
-          const client = create('http://localhost:5001');
+          const client = create({ url: 'http://localhost:5001' });
           
           // Add a file to IPFS
-          const file = await client.add('Hello, IPFS!');
-          console.log('Added file:', file.path, file.cid.toString());
+          const { cid } = await client.add('Hello, IPFS!');
+          console.log('Added file:', cid.toString());
           
           // Retrieve the file content
           const chunks = [];
-          for await (const chunk of client.cat(file.cid)) {
+          for await (const chunk of client.cat(cid)) {
             chunks.push(chunk);
           }
           console.log('Retrieved content:', Buffer.concat(chunks).toString());
