@@ -1,0 +1,48 @@
+name: IPFS Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ipfs-job:
+    runs-on: ubuntu-latest
+
+    services:
+      ipfs:
+        image: ipfs/go-ipfs:latest
+        ports:
+          - 5001:5001
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install IPFS HTTP Client
+      run: npm install ipfs-http-client
+
+    - name: Interact with IPFS
+      run: |
+        node -e "
+        const { create } = require('ipfs-http-client');
+        
+        async function main() {
+          const client = create('http://localhost:5001');
+          
+          // Add a file to IPFS
+          const file = await client.add('Hello, IPFS!');
+          console.log('Added file:', file.path, file.cid.toString());
+          
+          // Retrieve the file content
+          const chunks = [];
+          for await (const chunk of client.cat(file.cid)) {
+            chunks.push(chunk);
+          }
+          console.log('Retrieved content:', Buffer.concat(chunks).toString());
+        }
+        
+        main().catch(console.error);
+        "
