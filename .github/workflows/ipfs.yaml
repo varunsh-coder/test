@@ -1,49 +1,37 @@
-name: IPFS Public Nodes Workflow
+name: IPFS Upload Workflow
 
 on:
   workflow_dispatch:
-  
-jobs:
-  ipfs-public-nodes-job:
-    runs-on: ubuntu-latest
 
+jobs:
+  upload-to-ipfs:
+    runs-on: ubuntu-latest
+    
     steps:
     - name: Harden Runner
       uses: step-security/harden-runner@rc
       with:
-          egress-policy: audit
-    - uses: actions/checkout@v2
+        egress-policy: audit
+    
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - name: Setup IPFS
+      uses: ipfs-shipyard/ipfs-setup-action@v1
       with:
-        node-version: '16'
+        ipfs_version: 0.11.0
+        run_daemon: true
 
-    - name: Install IPFS HTTP Client
-      run: npm install ipfs-http-client@50.1.2
+    - name: Upload to IPFS
+      uses: aquiladev/ipfs-action@v0.3.1
+      with:
+        path: ./path/to/your/content
+        service: ipfs
+        verbose: true
+      id: ipfs
 
-    - name: Interact with Public IPFS Node (No Auth)
-      run: |
-        node -e "
-        const { create } = require('ipfs-http-client');
+    - name: Display IPFS hash
+      run: echo "Content uploaded to IPFS with hash ${{ steps.ipfs.outputs.hash }}"
 
-        async function main() {
-          // Connect to a public IPFS gateway that doesn't require authentication
-          const client = create({ url: 'https://ipfs.io' });
-
-          try {
-            // Fetch a known IPFS object (IPFS logo)
-            const ipfsLogoCid = 'QmTkzDwWqPbnAh5YiV5VwcTLnGdwSNsNTn2aDxdXBFca7D';
-            let logoContent = '';
-            for await (const chunk of client.cat(ipfsLogoCid)) {
-              logoContent += chunk.toString().slice(0, 100); // Just get the first 100 chars
-            }
-            console.log('IPFS Logo content (first 100 chars):', logoContent);
-
-          } catch (error) {
-            console.error('Error:', error.message);
-          }
-        }
-
-        main().catch(console.error);
-        "
+    - name: Create IPFS URL
+      run: echo "https://ipfs.io/ipfs/${{ steps.ipfs.outputs.hash }}"
