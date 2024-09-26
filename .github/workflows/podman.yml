@@ -22,7 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-     
+      - run: cat /run/systemd/resolve/resolv.conf
       - name: Build Container Image with Podman
         run: |
           podman build --log-level=debug -t my-app:latest .
