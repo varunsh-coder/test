@@ -25,6 +25,6 @@ jobs:
      
       - name: Build Container Image with Podman
         run: |
-          podman build -t my-app:latest .
+          podman build --log-level=debug -t my-app:latest .
 
      
