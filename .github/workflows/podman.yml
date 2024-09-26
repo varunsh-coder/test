@@ -1,0 +1,24 @@
+name: Build Container with Podman
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+     
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+     
+      - name: Build Container Image with Podman
+        run: |
+          podman build -t my-app:latest .
+
+     
