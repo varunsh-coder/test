@@ -19,6 +19,9 @@ jobs:
             production.cloudflare.docker.com:443
             registry-1.docker.io:443
 
+      - run: |
+          sudo resolvectl default-route eth0 no
+          sudo systemctl restart systemd-resolved
       - name: Checkout code
         uses: actions/checkout@v4
 
