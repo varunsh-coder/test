@@ -27,7 +27,9 @@ jobs:
 
       - name: Add credentials file to git exclude
         run: |
-          echo "${{ steps.auth.outputs.credentials_file_path }}" >> .git/info/exclude
+          credentials_file_path="${{ steps.auth.outputs.credentials_file_path }}"
+          echo "$credentials_file_path" >> .git/info/exclude
+          cat .git/info/exclude
 
       - name: Verify credentials file is excluded
         run: git status
