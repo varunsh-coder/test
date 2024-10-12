@@ -1,0 +1,24 @@
+# .github/workflows/on_workflow_completion.yml
+name: Run on Pull Request Workflow Completion
+
+on:
+  workflow_run:
+    workflows: ["Pull Request Workflow"]
+    types:
+      - completed
+
+jobs:
+  run_after_completion:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Post-workflow step
+        run: echo "This runs after the pull request workflow completes successfully."
+
+      - name: Print github.event.workflow_run properties
+        run: |
+          echo "Printing github.event.workflow_run properties:"
+          echo "${{ toJson(github.event.workflow_run) }}"
