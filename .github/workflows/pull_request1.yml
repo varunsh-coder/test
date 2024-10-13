@@ -1,4 +1,4 @@
-name: Pull Request Workflow
+name: Deploy to trigger workflows
 
 on:
   pull_request_review_comment:
