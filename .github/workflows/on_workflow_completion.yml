@@ -3,7 +3,7 @@ name: Run on Pull Request Workflow Completion
 
 on:
   workflow_run:
-    workflows: ["Pull Request Workflow"]
+    workflows: ["Deploy to trigger workflows"]
     types:
       - completed
 
