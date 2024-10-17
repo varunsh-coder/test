@@ -1,6 +1,7 @@
 name: Deploy to trigger workflows
 
 on:
+  push:
   pull_request_review_comment:
     types: [created]
 
