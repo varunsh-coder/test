@@ -21,6 +21,11 @@ jobs:
       - name: Post-workflow step
         run: echo "This runs after the pull request workflow completes successfully."
 
+      - name: Tag Code and push
+        run: |
+          git tag --force --message "Tagging commit"
+          git push --set-upstream origin --tags
+
       - name: Print github.event.workflow_run properties
         run: |
           echo "Printing github.event.workflow_run properties:"
