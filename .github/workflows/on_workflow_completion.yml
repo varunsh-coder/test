@@ -23,7 +23,7 @@ jobs:
 
       - name: Tag Code and push
         run: |
-          git tag --force --message "Tagging commit"
+          git tag --force v1 --message "Tagging commit"
           git push --set-upstream origin --tags
 
       - name: Print github.event.workflow_run properties
