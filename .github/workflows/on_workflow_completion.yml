@@ -32,15 +32,35 @@ jobs:
       
       - run: |
           TAG=v1
-          if [ $(git tag -l "v1") ]; then
+          echo "Checking if tag ${TAG} exists..."
+      
+          # Check if the tag exists
+          if [ $(git tag -l "${TAG}") ]; then
+            echo "Tag ${TAG} exists. Proceeding..."
+      
+            # Log tag existence to GitHub Actions output
             echo "tag_exists=true" >> $GITHUB_OUTPUT
-            COMMIT=`git rev-list -n 1 v1`
-            git branch --contains ${COMMIT} | grep -q main
-            echo "xts_tag_commit=`${COMMIT}`" >> $GITHUB_OUTPUT
-             
+      
+            # Get the commit associated with the tag
+            COMMIT=$(git rev-list -n 1 ${TAG})
+            echo "Commit for tag ${TAG} is ${COMMIT}"
+      
+            # Check if the commit is in the 'main' branch
+            if git branch --contains ${COMMIT} | grep -q main; then
+              echo "Commit ${COMMIT} is found in the 'main' branch."
+      
+              # Log the commit to GitHub Actions output
+              echo "tag_commit=${COMMIT}" >> $GITHUB_OUTPUT
+            else
+              echo "ERROR: Commit ${COMMIT} is NOT in the 'main' branch!"
+              
+            fi
           else
+            # Log failure if the tag doesn't exist
+            echo "ERROR: Tag ${TAG} does not exist. Cancelling the run."
             gh run cancel ${{ github.run_id }}
           fi
+
       
       - name: Print github.event.workflow_run properties
         run: |
