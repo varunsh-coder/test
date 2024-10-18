@@ -46,15 +46,12 @@ jobs:
             echo "Commit for tag ${TAG} is ${COMMIT}"
       
             # Check if the commit is in the 'main' branch
-            if git branch --contains ${COMMIT} | grep -q main; then
-              echo "Commit ${COMMIT} is found in the 'main' branch."
+            git branch --contains ${COMMIT} | grep -q main
+            echo "Commit ${COMMIT} is found in the 'main' branch."
       
-              # Log the commit to GitHub Actions output
-              echo "tag_commit=${COMMIT}" >> $GITHUB_OUTPUT
-            else
-              echo "ERROR: Commit ${COMMIT} is NOT in the 'main' branch!"
-              
-            fi
+            # Log the commit to GitHub Actions output
+            echo "tag_commit=${COMMIT}" >> $GITHUB_OUTPUT
+            
           else
             # Log failure if the tag doesn't exist
             echo "ERROR: Tag ${TAG} does not exist. Cancelling the run."
