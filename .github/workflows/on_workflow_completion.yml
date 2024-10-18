@@ -29,6 +29,19 @@ jobs:
           git tag --force v1 --message "Tagging commit"
           git push --set-upstream origin --tags
 
+      
+      - run: |
+          TAG=v1
+          if [ $(git tag -l "v1") ]; then
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+            COMMIT=`git rev-list -n 1 v1`
+            git branch --contains ${COMMIT} | grep -q main
+            echo "xts_tag_commit=`${COMMIT}`" >> $GITHUB_OUTPUT
+             
+          else
+            gh run cancel ${{ github.run_id }}
+          fi
+      
       - name: Print github.event.workflow_run properties
         run: |
           echo "Printing github.event.workflow_run properties:"
