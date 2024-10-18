@@ -23,6 +23,8 @@ jobs:
 
       - name: Tag Code and push
         run: |
+          git config --global user.email "test@test.com"
+          git config --global user.name "test"
           git tag --force v1 --message "Tagging commit"
           git push --set-upstream origin --tags
 
