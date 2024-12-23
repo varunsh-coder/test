@@ -1,0 +1,53 @@
+name: Test Harden Runner with dockerd reconfiguration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-harden-runner:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Harden Runner
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      # Step 2: Print Docker daemon.json after Harden Runner
+      - name: Print daemon.json after Harden Runner
+        run: |
+          set -ex -o pipefail
+          if [ -f /etc/docker/daemon.json ]; then
+            echo "Contents of /etc/docker/daemon.json:"
+            cat /etc/docker/daemon.json
+          else
+            echo "/etc/docker/daemon.json does not exist."
+          fi
+
+      # Step 3: Configure dockerd to use containerd image store
+      - name: Configure dockerd
+        run: |
+          set -ex -o pipefail
+
+          sudo mkdir -p /etc/docker
+          jq . <<< '{ "features": {"containerd-snapshotter": true} }' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
+
+      # Step 4: Print Docker daemon.json after reconfiguration
+      - name: Print daemon.json after reconfiguration
+        run: |
+          set -ex -o pipefail
+          if [ -f /etc/docker/daemon.json ]; then
+            echo "Contents of /etc/docker/daemon.json after reconfiguration:"
+            cat /etc/docker/daemon.json
+          else
+            echo "/etc/docker/daemon.json does not exist."
+          fi
+
+      # Step 5: Test DNS resolution inside a container
+      - name: Test DNS resolution
+        run: |
+          set -ex -o pipefail
+          
+          docker run --rm alpine sh -c "apk add --no-cache curl && curl -I https://google.com"
