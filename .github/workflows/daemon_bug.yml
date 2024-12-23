@@ -25,7 +25,7 @@ jobs:
             echo "/etc/docker/daemon.json does not exist."
           fi
 
-      # Step 3: Configure dockerd to use containerd image store
+      # Step 3: Configure dockerd
       - name: Configure dockerd
         run: |
           set -ex -o pipefail
@@ -45,9 +45,18 @@ jobs:
             echo "/etc/docker/daemon.json does not exist."
           fi
 
-      # Step 5: Test DNS resolution inside a container
-      - name: Test DNS resolution
+      # Step 5: Test DNS resolution and print /etc/resolv.conf
+      - name: Test DNS resolution and debug
         run: |
           set -ex -o pipefail
           
-          docker run --rm alpine sh -c "apk add --no-cache curl && curl -I https://google.com"
+          echo "Testing DNS resolution in a Docker container..."
+          docker run --rm alpine sh -c "cat /etc/resolv.conf && apk add --no-cache curl && curl -I https://google.com"
+
+      # Step 6: Print system-level DNS settings
+      - name: Print system DNS settings
+        run: |
+          echo "System DNS settings:"
+          cat /etc/resolv.conf
+          echo "Docker process DNS settings (if using systemd-resolved):"
+          resolvectl status || echo "resolvectl not available"
