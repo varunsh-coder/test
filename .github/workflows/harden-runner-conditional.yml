@@ -1,0 +1,26 @@
+name: Test Harden Runner Condition
+
+on:
+  workflow_dispatch:
+    inputs:
+      USE_HARDEN_RUNNER:
+        description: "Set to true to use Harden Runner"
+        required: true
+        default: "false"
+
+jobs:
+  test-harden-runner:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display USE_HARDEN_RUNNER value
+        run: echo "USE_HARDEN_RUNNER is set to ${{ github.event.inputs.USE_HARDEN_RUNNER }}"
+
+      - name: Harden Runner
+        if: ${{ github.event.inputs.USE_HARDEN_RUNNER == 'true' }}
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - name: Verify Step Execution
+        run: echo "Harden Runner step has completed (if it was executed)."
