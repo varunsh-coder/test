@@ -55,14 +55,6 @@ jobs:
             echo "/etc/docker/daemon.json does not exist."
           fi
 
-      - name: Print iptables Configuration
-        run: |
-          echo "Printing iptables firewall configuration..."
-          sudo iptables -L -v -n
-          echo "Printing iptables NAT table..."
-          sudo iptables -t nat -L -v -n
-          echo "Printing iptables Mangle table..."
-          sudo iptables -t mangle -L -v -n
       
       # Step 5: Test DNS resolution and print /etc/resolv.conf
       - name: Test DNS resolution and debug
