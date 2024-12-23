@@ -25,13 +25,24 @@ jobs:
             echo "/etc/docker/daemon.json does not exist."
           fi
 
-      # Step 3: Configure dockerd
-      - name: Configure dockerd
+      
+      - name: Configure dockerd with merged settings
         run: |
           set -ex -o pipefail
-
+      
           sudo mkdir -p /etc/docker
-          jq . <<< '{ "features": {"containerd-snapshotter": true} }' | sudo tee /etc/docker/daemon.json
+          if [ -f /etc/docker/daemon.json ]; then
+            echo "Merging existing daemon.json with new settings..."
+            # Merge the new feature with the existing configuration
+            sudo jq '.features["containerd-snapshotter"] = true' /etc/docker/daemon.json > /tmp/daemon.json
+            sudo mv /tmp/daemon.json /etc/docker/daemon.json
+          else
+            echo "Creating a new daemon.json file..."
+            # Create a new configuration file if none exists
+            jq . <<< '{ "features": {"containerd-snapshotter": true} }' | sudo tee /etc/docker/daemon.json
+          fi
+
+          echo "Restarting Docker to apply the changes..."
           sudo systemctl restart docker
 
       # Step 4: Print Docker daemon.json after reconfiguration
