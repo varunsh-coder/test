@@ -33,6 +33,11 @@ jobs:
           echo "$relative_path" >> .git/info/exclude
           cat .git/info/exclude
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+      
       - name: Verify credentials file is excluded
         run: git status
 
