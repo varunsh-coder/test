@@ -3,6 +3,9 @@ name: Test Harden Runner with dockerd reconfiguration
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test-harden-runner:
     runs-on: ubuntu-latest
