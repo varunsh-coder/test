@@ -1,0 +1,48 @@
+name: Test Ref vs SHA Checkout
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  test-checkouts:
+    if: github.event.label.name == 'test-checkout'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Initial wait to allow for push
+        run: |
+          echo "Waiting 2 minutes to allow for new commits..."
+          sleep 120
+      
+      - name: Checkout using ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          path: ref-checkout
+      
+      - name: Show ref commit
+        working-directory: ref-checkout
+        run: |
+          echo "Ref checkout is at commit:"
+          git rev-parse HEAD
+      
+      - name: Checkout using SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: sha-checkout
+      
+      - name: Show SHA commit
+        working-directory: sha-checkout
+        run: |
+          echo "SHA checkout is at commit:"
+          git rev-parse HEAD
+      
+      - name: Compare checkouts
+        run: |
+          echo "REF version:"
+          ls -la ref-checkout/
+          echo -e "\nSHA version:"
+          ls -la sha-checkout/
