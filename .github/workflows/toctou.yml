@@ -5,19 +5,27 @@ on:
     types:
       - labeled
 
+permissions:
+  contents: read
+
 jobs:
   test-checkouts:
     if: github.event.label.name == 'test-checkout'
     runs-on: ubuntu-latest
     
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
+        with:
+          egress-policy: audit
+
       - name: Initial wait to allow for push
         run: |
           echo "Waiting 2 minutes to allow for new commits..."
           sleep 120
       
       - name: Checkout using ref
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           path: ref-checkout
@@ -29,7 +37,7 @@ jobs:
           git rev-parse HEAD
       
       - name: Checkout using SHA
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: sha-checkout
