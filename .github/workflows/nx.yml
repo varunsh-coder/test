@@ -1,0 +1,35 @@
+name: Download nx@21.7.0 and upload artifact
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch-and-store:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (not strictly needed)
+        uses: actions/checkout@v4
+
+      - name: Set up Node (for npm)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # npm pack downloads the tarball without installing.
+      - name: Download nx@21.7.0 tarball
+        id: pack
+        run: |
+          PKG_FILE=$(npm pack nx@21.7.0)
+          echo "pkg_file=$PKG_FILE" >> "$GITHUB_OUTPUT"
+          # Optional: checksum for integrity
+          sha256sum "$PKG_FILE" | tee SHA256SUMS.txt
+
+      - name: Upload tarball and checksums as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nx-21.7.0
+          path: |
+            ${{ steps.pack.outputs.pkg_file }}
+            SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14
