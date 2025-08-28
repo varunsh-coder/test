@@ -3,6 +3,9 @@ name: Test Harden Runner with dockerd reconfiguration
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test-harden-runner:
     runs-on: ubuntu-latest
@@ -10,7 +13,7 @@ jobs:
     steps:
       # Step 1: Harden Runner
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
         with:
           egress-policy: audit
 
