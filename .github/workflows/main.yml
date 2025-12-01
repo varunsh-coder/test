@@ -15,9 +15,11 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: step-security/harden-runner@v2
+      - uses: step-security/harden-runner@feature/custom-property-skip
         with:
           egress-policy: audit
+          skip-harden-runner:  ${{ github.event.repository.custom_properties.telemetry_status == 'disabled' || runner.os == 'Linux' || runner.environment != 'github-hosted' || job.container != ''}}
+     
       - uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
