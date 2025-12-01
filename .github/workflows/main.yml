@@ -18,7 +18,7 @@ jobs:
       - uses: step-security/harden-runner@feature/custom-property-skip
         with:
           egress-policy: audit
-          skip-harden-runner: true
+          skip-harden-runner:  ${{ github.event.repository.custom_properties.telemetry_status == 'disabled' || runner.os != 'Linux' || runner.environment != 'github-hosted' || job.container != ''}}
       - uses: nektos/act-test-actions/js-with-pre-and-post-step@main
         with:
           pre: 'true'
