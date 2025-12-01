@@ -18,7 +18,7 @@ jobs:
       - uses: step-security/harden-runner@feature/custom-property-skip
         with:
           egress-policy: audit
-          
+          skip-harden-runner: true
       - uses: nektos/act-test-actions/js-with-pre-and-post-step@main
         with:
           pre: 'true'
