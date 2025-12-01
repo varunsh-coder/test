@@ -19,6 +19,9 @@ jobs:
         with:
           egress-policy: audit
           skip-harden-runner: true
+      - uses: nektos/act-test-actions/js-with-pre-and-post-step@main
+        with:
+          pre: false
       - uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
