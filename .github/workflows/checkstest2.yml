@@ -1,0 +1,16 @@
+name: "checks test2"
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  main:
+    name: checks test2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sleep 30
