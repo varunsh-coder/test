@@ -1,0 +1,16 @@
+name: "checks test"
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sleep 30
