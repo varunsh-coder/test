@@ -21,7 +21,7 @@ jobs:
           skip-harden-runner: true
       - uses: nektos/act-test-actions/js-with-pre-and-post-step@main
         with:
-          pre: true
+          pre: 'true'
       - uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
